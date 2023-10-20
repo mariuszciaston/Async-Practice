@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>API fetch test</title>
+</head>
+
+<body>
+    <img src="#" alt="cat">
+    <button>Reload</button>
+    <input type="text">
+    <script>
+        const img = document.querySelector('img')
+        const btn = document.querySelector('button')
+        const ipt = document.querySelector('input')
+
+        function grabImage() {
+            let name = 'cat';
+            if (ipt.value.trim() !== '') {
+                name = ipt.value;
+            }
+            fetch(`https://api.giphy.com/v1/gifs/translate?api_key=bb2006d9d3454578be1a99cfad65913d&s=${name}`, { mode: 'cors' })
+                .then(function (response) {
+                    return response.json()
+                })
+                .then(function (response) {
+                    if (response.data.length !== 0) {
+                        console.log(response);
+                        img.src = response.data.images.original.url;
+                    } 
+                    else {
+                        img.src = '';
+                        img.alt = 'No gifs found with the searched keyword.'
+                    }
+                })
+                .catch(e => {
+                    console.log(e);
+                })
+        }
+
+        btn.addEventListener("click", grabImage);
+        grabImage();
+    </script>
+</body>
+
+</html>
